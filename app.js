@@ -18,14 +18,14 @@ app.post('/books',(req, res)=>{
   })
 })
 
-app.delete("/books:id",(req, res)=>{
+app.delete("/books/:id",(req, res)=>{
   res.json({
     "message" : "Data deleted successfully"
   })
 })
 
-app.patch('/books:id',(req, res)=>{
-  req.json({
+app.patch('/books/:id',(req, res)=>{
+  res.json({
     "message" : "Data updated successfully"
   })
 })
