@@ -1,4 +1,5 @@
 const express = require('express');
+const { book } = require('./database/db');
 require('./database/db')
 
 
@@ -6,16 +7,37 @@ const PORT = process.env.PORT || 4000;
 
 const app = express();
 
-app.get("/books",(req, res)=>{
-  res.json({
-    "message" : "This is just testing GET method in this api"
+//middleware
+app.use(express.json());
+
+app.get("/books",async (req, res)=>{
+  try{
+    const bookList = await book.findAll()
+    res.json({
+    "message" : "Book list are here",
+    bookList
   })
+  }catch(err){
+    console.log(`Error : ${err}`)
+  }
+
 })
 
-app.post('/books',(req, res)=>{
-  res.json({
-    "message" : "Data received successfully"
-  })
+app.post('/books',async (req, res)=>{
+  const {Auther, Name, Price} = req.body
+  console.log(`${Auther} ${Name} ${Price}`)
+  try{
+    await book.create({
+      bookAuther : Auther,
+      bookName : Name,
+      bookPrice : Price
+    })
+    res.json({
+      "message" : "Data received successfully"
+    })
+  }catch(err){
+    console.log(`Error ${err}`)
+  }
 })
 
 app.delete("/books/:id",(req, res)=>{
