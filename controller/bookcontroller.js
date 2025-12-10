@@ -53,17 +53,25 @@ exports.addData = async (req, res)=>{
   }
 }
 
-exports.deleteData = (req, res)=>{
+exports.deleteData = async (req, res)=>{
+  const id = req.params.id;
+  // id can be get through json/ in body 
+  // to access the data through const {id} = req.body
+  await book.destroy({
+    where : {
+      id : id
+    }
+  })
   res.json({
     "message" : "Data deleted successfully"
   })
 }
-(req, res)=>{
-  res.json({
-    "message" : "Data updated successfully"
-  })
-}
-exports.updateData = (req, res)=>{
+exports.updateData = async (req, res)=>{
+
+  const id = req.params.id;
+  const {bookName, price, auther} = req.body;
+
+  await book.update({bookName, bookPrice : price, bookAuther : auther}, {where : {id}})
   res.json({
     "message" : "Data updated successfully"
   })
